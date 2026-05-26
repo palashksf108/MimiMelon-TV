@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mimimelon TV — Turn Any Story Into a Cinematic Video</title>
+<meta name="description" content="AI-powered Story-to-Video SaaS platform. Enter a short prompt and get a full cinematic video with story, scenes, images, voiceover, subtitles, music and editing — automatically."/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     LANDING PAGE
+═══════════════════════════════════════════════════════ -->
+<div id="view-landing" class="view active">
+  <!-- Nav -->
+  <nav class="landing-nav" id="landing-nav">
+    <div class="landing-logo">
+      <div class="landing-logo-icon">🎬</div>
+      <span>Mimimelon TV <span class="text-gradient">AI</span></span>
+    </div>
+    <div class="landing-nav-links" id="landing-nav-links">
+      <span class="nav-link" id="lnav-features"   onclick="Nav.scrollTo('features')">Features</span>
+      <span class="nav-link" id="lnav-how-it-works" onclick="Nav.scrollTo('how-it-works')">How It Works</span>
+      <span class="nav-link" id="lnav-pricing"   onclick="Nav.scrollTo('pricing')">Pricing</span>
+    </div>
+    <div class="flex gap-3 items-center">
+      <button class="btn btn-ghost btn-sm" onclick="console.log('Sign In Clicked'); Auth.openModal('sign-in')">Sign In</button>
+      <button class="btn btn-primary btn-sm" id="btn-start-free-nav" onclick="Auth.handleStartFree()">Start Free →</button>
+      <!-- Mobile hamburger -->
+      <button class="btn btn-ghost btn-icon" id="hamburger-btn" onclick="Nav.toggleMobile()" aria-label="Open menu" style="display:none">☰</button>
+    </div>
+  </nav>
+  <!-- Mobile nav drawer -->
+  <div id="mobile-nav-drawer" style="display:none;position:fixed;top:65px;left:0;right:0;background:var(--bg-surface);border-bottom:1px solid var(--border);z-index:99;padding:var(--sp-4) var(--sp-6);flex-direction:column;gap:var(--sp-3)">
+    <span class="nav-link" onclick="Auth.openModal('features');Nav.closeMobile()">✦ Features</span>
+    <span class="nav-link" onclick="Nav.scrollTo('how-it-works');Nav.closeMobile()">✦ How It Works</span>
+    <span class="nav-link" onclick="Nav.scrollTo('pricing');Nav.closeMobile()">✦ Pricing</span>
+    <div class="divider"></div>
+    <button class="btn btn-ghost btn-sm w-full" onclick="Auth.openModal('sign-in');Nav.closeMobile()">Sign In</button>
+    <button class="btn btn-primary btn-sm w-full" onclick="Auth.handleStartFree();Nav.closeMobile()">Start Free →</button>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="hero-badge-dot"></span> Powered by GPT-4 · Gemini · ElevenLabs · Veo</div>
+      <h1 class="hero-headline">Turn Any Story Into a<br/><span class="text-gradient">Cinematic Video</span></h1>
+      <p class="hero-sub">Just type a short prompt. Our AI writes the story, creates characters, generates scenes, adds voiceover, subtitles, music — and renders your final movie. Automatically.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-xl" id="btn-start-creating" onclick="Auth.handleStartCreatingFree()">
+          🚀 Start Creating Free
+        </button>
+        <button class="btn btn-secondary btn-xl" id="hero-watch-demo-btn" onclick="DemoPlayer.watchDemo()">▶ Watch Demo</button>
+      </div>
+      <p class="hero-cta-note">No credit card required · 5 free videos included</p>
+      <!-- Hero Preview — clickable thumbnail linking to demo player -->
+      <div class="hero-preview" id="hero-preview-wrap">
+        <div class="hero-preview-glow"></div>
+        <div class="hero-demo-thumb" onclick="DemoPlayer.watchDemo()" title="Click to watch demo">
+          <img src="assets/images/hero_dashboard.png" alt="Mimimelon TV — Dashboard Preview" class="hero-preview-img" id="hero-img" onerror="this.style.display='none'"/>
+          <div class="hero-demo-thumb-overlay">
+            <div class="hero-demo-badge">🎬 Live Demo · 5:24</div>
+            <button class="hero-play-btn" aria-label="Watch Demo">
+              <span class="hero-play-pulse"></span>
+              <span class="hero-play-pulse hero-play-pulse-2"></span>
+              <span class="hero-play-icon">▶</span>
+            </button>
+            <div class="hero-demo-hint">Click to watch demo</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-val">50K+</div><div class="hero-stat-label">Videos Created</div></div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat"><div class="hero-stat-val">12K+</div><div class="hero-stat-label">Creators</div></div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat"><div class="hero-stat-val">95%</div><div class="hero-stat-label">Consistency Score</div></div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat"><div class="hero-stat-val">4K</div><div class="hero-stat-label">Max Resolution</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       DEMO VIDEO PLAYER SECTION
+  ══════════════════════════════════════════════ -->
+  <section class="demo-section" id="demo-video">
+    <div class="section-wrap">
+      <div class="section-label">▶ Interactive Demo</div>
+      <h2 class="section-title">See Mimimelon TV <span class="text-gradient">in Action</span></h2>
+      <p class="section-sub">Watch how a simple prompt becomes a full cinematic video — in under 60 seconds.</p>
+
+      <!-- Player Wrapper -->
+      <div class="dp-wrap" id="dp-wrap">
+
+        <!-- ── THUMBNAIL STATE ── -->
+        <div class="dp-thumbnail" id="dp-thumbnail">
+          <img src="assets/images/hero_dashboard.png" alt="Mimimelon TV Demo Thumbnail" class="dp-thumb-img" onerror="this.style.display='none'"/>
+          <div class="dp-thumb-overlay">
+            <!-- Duration badge -->
+            <div class="dp-duration">🎬 5:24</div>
+            <!-- Animated play button -->
+            <button class="dp-play-big" id="dp-thumb-play" onclick="DemoPlayer.play()" aria-label="Play demo video">
+              <span class="dp-pulse"></span>
+              <span class="dp-pulse dp-pulse-2"></span>
+              <span class="dp-play-tri">▶</span>
+            </button>
+            <p class="dp-click-hint">Click to play demo</p>
+          </div>
+        </div>
+
+        <!-- ── LOADING STATE ── -->
+        <div class="dp-loading" id="dp-loading">
+          <div class="dp-spinner"></div>
+          <div class="dp-load-title">Loading Demo...</div>
+          <div class="dp-load-bar-wrap"><div class="dp-load-bar" id="dp-load-bar"></div></div>
+          <div class="dp-load-pct" id="dp-load-pct">0%</div>
+        </div>
+
+        <!-- ── PLAYER STATE ── -->
+        <div class="dp-player" id="dp-player">
+          <!-- YouTube iframe (primary) -->
+          <iframe
+            id="dp-youtube"
+            class="dp-iframe"
+            src=""
+            data-src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&rel=0&modestbranding=1&enablejsapi=1"
+            title="Mimimelon TV Demo"
+            frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen
+            style="display:none"
+          ></iframe>
+          <!-- Native video (fallback) -->
+          <video
+            id="dp-video"
+            class="dp-video-el"
+            preload="metadata"
+            playsinline
+            style="display:none"
+          >
+            <source src="assets/video/demo.mp4" type="video/mp4"/>
+            Your browser does not support video.
+          </video>
+          <!-- Overlay controls shown briefly on hover -->
+          <div class="dp-video-overlay" id="dp-overlay">
+            <button class="dp-overlay-play" id="dp-overlay-play" onclick="DemoPlayer.togglePlay()">
+              <span id="dp-overlay-icon">⏸</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── ERROR STATE ── -->
+        <div class="dp-error" id="dp-error">
+          <div class="dp-error-icon">⚠️</div>
+          <div class="dp-error-title">Demo video unavailable</div>
+          <div class="dp-error-sub">Check your connection and try again</div>
+          <button class="btn btn-primary mt-4" onclick="DemoPlayer.reload()">🔄 Reload Demo</button>
+        </div>
+
+        <!-- ── CUSTOM CONTROLS BAR ── -->
+        <div class="dp-controls" id="dp-controls">
+          <!-- Progress bar -->
+          <div class="dp-progress-wrap" id="dp-progress-wrap" onclick="DemoPlayer.seek(event)" title="Seek">
+            <div class="dp-progress-bg">
+              <div class="dp-progress-filled" id="dp-progress-filled" style="width:0%"></div>
+              <div class="dp-progress-thumb" id="dp-progress-thumb" style="left:0%"></div>
+            </div>
+          </div>
+          <!-- Controls row -->
+          <div class="dp-ctrl-row">
+            <!-- Left controls -->
+            <div class="dp-ctrl-left">
+              <button class="dp-btn" id="dp-btn-play" onclick="DemoPlayer.togglePlay()" title="Play / Pause">⏸</button>
+              <button class="dp-btn" onclick="DemoPlayer.stop()" title="Stop">⏹</button>
+              <button class="dp-btn" onclick="DemoPlayer.restart()" title="Restart">↩</button>
+              <!-- Volume -->
+              <div class="dp-vol-wrap">
+                <button class="dp-btn" id="dp-btn-mute" onclick="DemoPlayer.toggleMute()" title="Mute / Unmute">🔊</button>
+                <input type="range" class="dp-vol-slider" id="dp-vol-slider" min="0" max="100" value="80" oninput="DemoPlayer.setVolume(this.value)" title="Volume"/>
+              </div>
+              <!-- Time -->
+              <span class="dp-time" id="dp-time">0:00 / 5:24</span>
+            </div>
+            <!-- Right controls -->
+            <div class="dp-ctrl-right">
+              <!-- Speed -->
+              <div class="dp-speed-wrap">
+                <button class="dp-btn dp-speed-btn" id="dp-speed-display" onclick="DemoPlayer.cycleSpeed()" title="Playback Speed">1x</button>
+                <div class="dp-speed-menu" id="dp-speed-menu">
+                  <div class="dp-speed-opt" onclick="DemoPlayer.setSpeed(0.5)">0.5x</div>
+                  <div class="dp-speed-opt active" onclick="DemoPlayer.setSpeed(1)">1x</div>
+                  <div class="dp-speed-opt" onclick="DemoPlayer.setSpeed(1.25)">1.25x</div>
+                  <div class="dp-speed-opt" onclick="DemoPlayer.setSpeed(1.5)">1.5x</div>
+                  <div class="dp-speed-opt" onclick="DemoPlayer.setSpeed(2)">2x</div>
+                </div>
+              </div>
+              <button class="dp-btn" onclick="DemoPlayer.fullscreen()" title="Fullscreen">⛶</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /dp-wrap -->
+
+      <!-- Analytics badges -->
+      <div class="demo-analytics" id="demo-analytics">
+        <div class="demo-stat-pill"><span id="da-views">0</span> Demo Views</div>
+        <div class="demo-stat-pill">⏱ <span id="da-watch">0</span>s Watched</div>
+        <div class="demo-stat-pill">✅ <span id="da-rate">0</span>% Completion</div>
+        <div class="demo-stat-pill">▶ <span id="da-clicks">0</span> Play Clicks</div>
+      </div>
+    </div><!-- /section-wrap -->
+  </section><!-- /demo-video -->
+
+  <!-- Features -->
+  <section class="features-section" id="features">
+    <div class="section-wrap">
+      <div class="section-label">✦ Everything You Need</div>
+      <h2 class="section-title">23 AI Systems. <span class="text-gradient">One Platform.</span></h2>
+      <p class="section-sub">From a single prompt to a full cinematic video — every step is automated, consistent, and professional.</p>
+      <div class="feature-grid">
+        <div class="feature-card"><div class="feature-icon fi-purple">✍️</div><div class="feature-title">AI Story Generator</div><div class="feature-desc">Full story, characters, plot, dialogues, emotions, timeline, and ending — all from one short prompt.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-cyan">📖</div><div class="feature-title">Story Bible System</div><div class="feature-desc">Permanent canon for every character, location, event, and relationship — loaded before every generation.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-green">🔒</div><div class="feature-title">Character Lock</div><div class="feature-desc">Lock face, hair, age, clothing and more. Characters never randomly change — 100% identity consistency.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-orange">🎨</div><div class="feature-title">Scene & Image Studio</div><div class="feature-desc">Auto-generated scene descriptions, cinematic image prompts, and HD images in any art style.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-pink">🎬</div><div class="feature-title">Image-to-Video Engine</div><div class="feature-desc">Bring scenes to life with walking, talking, eye-blinking, wind, fire, and cinematic camera moves.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-blue">🎙️</div><div class="feature-title">AI Voice + Subtitles</div><div class="feature-desc">Multi-language voiceover with emotion control, auto-synced subtitles in YouTube/TikTok/Cinematic styles.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-purple">🎵</div><div class="feature-title">Background Music</div><div class="feature-desc">AI-suggested cinematic music by genre — emotional, adventure, horror, motivational — with fade controls.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-cyan">✂️</div><div class="feature-title">Timeline Editor</div><div class="feature-desc">Professional drag-and-drop timeline with video, audio, subtitle, and music tracks. Cut, trim, merge.</div></div>
+        <div class="feature-card"><div class="feature-icon fi-green">✅</div><div class="feature-title">Auto Quality Check</div><div class="feature-desc">95% minimum consistency score enforced across every scene, character, and environment — auto-regenerated if needed.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="workflow-section" id="how-it-works">
+    <div class="section-wrap">
+      <div class="section-label">✦ How It Works</div>
+      <h2 class="section-title">Prompt to Movie in <span class="text-gradient">Minutes</span></h2>
+      <p class="section-sub">Our 23-step AI pipeline handles everything automatically while you stay in control.</p>
+      <div class="workflow-steps">
+        <div class="workflow-step"><div class="workflow-num">1</div><div class="workflow-content"><div class="workflow-title">Enter Your Prompt</div><div class="workflow-desc">Type a short idea — "A brave boy saves a lost puppy in the mountains." Choose style, genre, length, voice, and aspect ratio.</div></div></div>
+        <div class="workflow-step"><div class="workflow-num">2</div><div class="workflow-content"><div class="workflow-title">AI Builds Your Story World</div><div class="workflow-desc">Full story, character profiles, story bible, environment references, and scene breakdown — all generated and locked for consistency.</div></div></div>
+        <div class="workflow-step"><div class="workflow-num">3</div><div class="workflow-content"><div class="workflow-title">Scenes, Images & Videos Generated</div><div class="workflow-desc">Every scene gets a cinematic image, an animated video clip, AI voiceover, and synced subtitles — automatically.</div></div></div>
+        <div class="workflow-step"><div class="workflow-num">4</div><div class="workflow-content"><div class="workflow-title">Edit in Timeline, Export in 4K</div><div class="workflow-desc">Fine-tune in the professional timeline editor, add music, adjust subtitles, then export in MP4/MOV at up to 4K resolution.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing-section" id="pricing">
+    <div class="section-label">✦ Simple Pricing</div>
+    <h2 class="section-title">Start Free. <span class="text-gradient">Scale Anytime.</span></h2>
+    <p class="section-sub">All plans include all 23 AI systems. Upgrade for more credits, higher quality, and API access.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-plan">Free</div>
+        <div class="pricing-price">$0</div>
+        <div class="pricing-period">forever</div>
+        <div class="pricing-desc">Perfect for trying out Mimimelon TV and creating your first video.</div>
+        <div class="pricing-features">
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>5 videos per month</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>720P export</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>All AI systems</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>Watermark included</div>
+          <div class="pricing-feat"><span class="pricing-feat-x">✗</span>API access</div>
+        </div>
+        <button class="btn btn-secondary btn-lg w-full" id="btn-pricing-free" onclick="Auth.handleStartFree()">Get Started Free</button>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-popular">Most Popular</div>
+        <div class="pricing-plan">Pro</div>
+        <div class="pricing-price">$29</div>
+        <div class="pricing-period">per month</div>
+        <div class="pricing-desc">For creators who need more videos, HD export, and no watermark.</div>
+        <div class="pricing-features">
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>100 videos per month</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>1080P + 2K export</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>No watermark</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>Priority generation</div>
+          <div class="pricing-feat"><span class="pricing-feat-x">✗</span>API access</div>
+        </div>
+        <button class="btn btn-primary btn-lg w-full" id="btn-pricing-pro" onclick="Auth.handleStartFree()">Start Pro Trial</button>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-plan">Enterprise</div>
+        <div class="pricing-price">$99</div>
+        <div class="pricing-period">per month</div>
+        <div class="pricing-desc">Unlimited generation, 4K export, API access, and custom AI model selection.</div>
+        <div class="pricing-features">
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>Unlimited videos</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>4K export</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>Full API access</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>Custom AI models</div>
+          <div class="pricing-feat"><span class="pricing-feat-check">✓</span>Dedicated support</div>
+        </div>
+        <button class="btn btn-secondary btn-lg w-full" id="btn-pricing-enterprise" onclick="Auth.handleStartFree()">Contact Sales</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="landing-logo" style="justify-content:center;margin-bottom:var(--sp-4)">
+      <div class="landing-logo-icon">🎬</div> Mimimelon TV
+    </div>
+    <p>© 2026 Mimimelon TV · All rights reserved ·
+      <span class="auth-link" onclick="Auth.openModal('sign-in')">Sign In</span> ·
+      <span class="auth-link">Privacy</span> ·
+      <span class="auth-link">Terms</span>
+    </p>
+  </footer>
+
+  <!-- ════════════════════════════════════════════════════════
+       AUTH MODAL — overlays landing page
+  ════════════════════════════════════════════════════════ -->
+  <div class="auth-modal-overlay" id="auth-modal-overlay" onclick="Auth.closeOnBackdrop(event)" role="dialog" aria-modal="true" aria-label="Authentication">
+    <div class="auth-modal-card" id="auth-modal-card">
+
+      <!-- Close button -->
+      <button class="auth-modal-close" onclick="Auth.closeModal()" aria-label="Close">×</button>
+
+      <!-- Logo -->
+      <div class="auth-modal-logo">
+        <div class="auth-logo-icon">🎬</div>
+        <span style="font-family:var(--font-display);font-weight:900;font-size:1.2rem;letter-spacing:-.04em">
+          Mimimelon TV <span class="text-gradient">AI</span>
+        </span>
+      </div>
+
+      <!-- ── SIGN UP MAIN PANE ── -->
+      <div id="modal-signup-pane">
+        <div class="auth-modal-title">Create your free account</div>
+        <div class="auth-modal-sub">5 free videos included · No credit card required</div>
+
+        <div class="auth-oauth-grid" style="display: flex; flex-direction: column; gap: 8px;">
+          <button class="auth-oauth-btn w-full" id="btn-google-signup" onclick="Auth.oauthSignup('google')" style="width: 100%;">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Continue with Google
+          </button>
+          <button class="auth-oauth-btn w-full" id="btn-facebook-signup" onclick="Auth.oauthSignup('facebook')" style="width: 100%;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Continue with Facebook
+          </button>
+          <button class="auth-oauth-btn w-full" onclick="Auth.showPane('mobile-signup')" style="width: 100%;">
+            <span>📱</span> Continue with Mobile Number
+          </button>
+          <button class="auth-oauth-btn w-full" onclick="Auth.showPane('email-signup')" style="width: 100%;">
+            <span>✉️</span> Continue with Email
+          </button>
+        </div>
+
+        <div class="auth-modal-switch">
+          Already have an account?
+          <span class="auth-link" onclick="Auth.openModal('sign-in')">Sign in</span>
+        </div>
+      </div>
+
+      <!-- ── EMAIL SIGN UP FORM PANE ── -->
+      <div id="modal-email-signup-pane" style="display:none">
+        <div class="auth-modal-title">Sign up with Email</div>
+        <div class="auth-modal-form">
+          <div class="form-group">
+            <label class="label">Full Name</label>
+            <input class="input" id="signup-fullname" placeholder="Alex Smith" autocomplete="name"/>
+          </div>
+          <div class="form-group">
+            <label class="label">Email Address</label>
+            <input class="input" id="signup-email" type="email" placeholder="you@example.com" autocomplete="email"/>
+          </div>
+          <div class="form-group">
+            <label class="label">Password</label>
+            <div class="auth-pass-wrap">
+              <input class="input" id="signup-pass" type="password" placeholder="Min 8 chars, mixed case, symbols" autocomplete="new-password" oninput="Auth.checkPassStrength(this.value)"/>
+              <button class="auth-pass-toggle" onclick="Auth.togglePass('signup-pass',this)" type="button">👁️</button>
+            </div>
+            <!-- Strength Meter -->
+            <div style="margin-top:6px; display:flex; align-items:center; gap:8px;">
+              <div style="flex:1; height:4px; background:var(--border); border-radius:2px; display:flex; overflow:hidden;">
+                <div id="strength-bar-1" style="flex:1; background:transparent;"></div>
+                <div id="strength-bar-2" style="flex:1; background:transparent; margin-left:2px;"></div>
+                <div id="strength-bar-3" style="flex:1; background:transparent; margin-left:2px;"></div>
+              </div>
+              <span id="strength-label" class="text-xs font-bold text-muted" style="min-width:50px">None</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="label">Confirm Password</label>
+            <div class="auth-pass-wrap">
+              <input class="input" id="signup-confirm-pass" type="password" placeholder="Re-enter password" autocomplete="new-password"/>
+              <button class="auth-pass-toggle" onclick="Auth.togglePass('signup-confirm-pass',this)" type="button">👁️</button>
+            </div>
+          </div>
+
+          <!-- Consent Agreements -->
+          <div class="flex flex-col gap-2 mb-4" style="margin-top:15px; border-top:1px solid var(--border); padding-top:10px;">
+            <label class="flex items-start gap-2 text-xs text-secondary cursor-pointer">
+              <input type="checkbox" id="signup-agree-terms" style="margin-top:2px"/>
+              <span>I agree to the <span class="auth-link">Terms of Service</span> *</span>
+            </label>
+            <label class="flex items-start gap-2 text-xs text-secondary cursor-pointer">
+              <input type="checkbox" id="signup-agree-privacy" style="margin-top:2px"/>
+              <span>I agree to the <span class="auth-link">Privacy Policy</span> *</span>
+            </label>
+            <label class="flex items-start gap-2 text-xs text-secondary cursor-pointer">
+              <input type="checkbox" id="signup-agree-notifications" style="margin-top:2px"/>
+              <span>I agree to receive account-related notifications *</span>
+            </label>
+            <label class="flex items-start gap-2 text-xs text-secondary cursor-pointer">
+              <input type="checkbox" id="signup-agree-marketing" style="margin-top:2px"/>
+              <span>I agree to receive marketing emails (Optional)</span>
+            </label>
+          </div>
+
+          <div class="auth-modal-error" id="signup-error"></div>
+          <button class="btn btn-primary w-full btn-lg auth-submit-btn" id="btn-signup-email" onclick="Auth.doEmailSignupSubmit()">
+            <span class="btn-text">Send Email OTP</span>
+          </button>
+        </div>
+        <div class="auth-modal-switch">
+          <span class="auth-link" onclick="Auth.showPane('signup')">← Back to Options</span>
+        </div>
+      </div>
+
+      <!-- ── MOBILE SIGN UP FORM PANE ── -->
+      <div id="modal-mobile-signup-pane" style="display:none">
+        <div class="auth-modal-title">Sign up with Mobile</div>
+        <div class="auth-modal-sub">We will send a 6-digit OTP to verify your number</div>
+        <div class="auth-modal-form">
+          <div class="form-group">
+            <label class="label">Mobile Number</label>
+            <input class="input" id="signup-mobile" placeholder="+91 XXXXX XXXXX" autocomplete="tel"/>
+          </div>
+
+          <!-- Consent Agreements -->
+          <div class="flex flex-col gap-2 mb-4" style="margin-top:15px; border-top:1px solid var(--border); padding-top:10px;">
+            <label class="flex items-start gap-2 text-xs text-secondary cursor-pointer">
+              <input type="checkbox" id="mobile-agree-terms" style="margin-top:2px"/>
+              <span>I agree to the <span class="auth-link">Terms of Service</span> *</span>
+            </label>
+            <label class="flex items-start gap-2 text-xs text-secondary cursor-pointer">
+              <input type="checkbox" id="mobile-agree-privacy" style="margin-top:2px"/>
+              <span>I agree to the <span class="auth-link">Privacy Policy</span> *</span>
+            </label>
+            <label class="flex items-start gap-2 text-xs text-secondary cursor-pointer">
+              <input type="checkbox" id="mobile-agree-notifications" style="margin-top:2px"/>
+              <span>I agree to receive account-related notifications *</span>
+            </label>
+          </div>
+
+          <div class="auth-modal-error" id="mobile-signup-error"></div>
+          <button class="btn btn-primary w-full btn-lg auth-submit-btn" id="btn-signup-mobile" onclick="Auth.doMobileSignupSubmit()">
+            <span class="btn-text">Send OTP</span>
+          </button>
+        </div>
+        <div class="auth-modal-switch">
+          <span class="auth-link" onclick="Auth.showPane('signup')">← Back to Options</span>
+        </div>
+      </div>
+
+      <!-- ── OTP VERIFICATION PANE ── -->
+      <div id="modal-otp-pane" style="display:none">
+        <div class="auth-modal-title">Verify OTP</div>
+        <div class="auth-modal-sub" id="otp-destination-label">Enter the 6-digit verification code sent to your credentials</div>
+        <div class="auth-modal-form">
+          <div class="form-group">
+            <label class="label">One-Time Password (OTP)</label>
+            <input class="input text-center" id="auth-otp-input" placeholder="0 0 0 0 0 0" maxlength="6" style="letter-spacing:10px; font-size:1.5rem; font-weight:bold; height:50px"/>
+          </div>
+          <div id="otp-timer-label" class="text-xs text-muted mb-4 text-center">OTP is valid for 10 minutes. Resend in 60 seconds.</div>
+          <div class="auth-modal-error" id="otp-error"></div>
+          <div class="flex gap-2">
+            <button class="btn btn-secondary flex-1" id="btn-resend-otp" onclick="Auth.resendOTP()" disabled>Resend OTP</button>
+            <button class="btn btn-primary flex-1" id="btn-verify-otp" onclick="Auth.verifyOTP()">Verify OTP</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SIGN IN PANE ── -->
+      <div id="modal-signin-pane" style="display:none">
+        <div class="auth-modal-title">Welcome back</div>
+        <div class="auth-modal-sub">Sign in to continue creating amazing videos</div>
+
+        <div class="auth-oauth-grid" style="display: flex; flex-direction: column; gap: 8px;">
+          <button class="auth-oauth-btn w-full" id="btn-google-signin" onclick="Auth.oauthSignup('google')" style="width: 100%;">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Sign in with Google
+          </button>
+          <button class="auth-oauth-btn w-full" id="btn-facebook-signin" onclick="Auth.oauthSignup('facebook')" style="width: 100%;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Sign in with Facebook
+          </button>
+          <button class="auth-oauth-btn w-full" onclick="Auth.showPane('mobile-signin')" style="width: 100%;">
+            <span>📱</span> Sign in with Mobile + OTP
+          </button>
+        </div>
+
+        <div class="auth-modal-divider"><span>or sign in with email</span></div>
+
+        <div class="auth-modal-form" id="signin-email-form">
+          <div class="form-group">
+            <label class="label">Email Address</label>
+            <input class="input" id="signin-email" type="email" placeholder="you@example.com" autocomplete="email"/>
+          </div>
+          <div class="form-group">
+            <label class="label">Password</label>
+            <div class="auth-pass-wrap">
+              <input class="input" id="signin-pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+              <button class="auth-pass-toggle" onclick="Auth.togglePass('signin-pass',this)" type="button">👁️</button>
+            </div>
+          </div>
+          <div class="auth-modal-forgot"><span class="auth-link" onclick="Auth.showForgot()">Forgot password?</span></div>
+          <div class="auth-modal-error" id="signin-error"></div>
+          <button class="btn btn-primary w-full btn-lg auth-submit-btn" id="btn-signin-email" onclick="Auth.doEmailSignin()">
+            <span class="btn-text">Sign In →</span>
+          </button>
+        </div>
+
+        <div class="auth-modal-switch">
+          Don't have an account?
+          <span class="auth-link" onclick="Auth.openModal('sign-up')">Create free account</span>
+        </div>
+      </div>
+
+      <!-- ── MOBILE SIGN IN FORM PANE ── -->
+      <div id="modal-mobile-signin-pane" style="display:none">
+        <div class="auth-modal-title">Sign in with Mobile</div>
+        <div class="auth-modal-sub">We will send a 6-digit OTP to your phone</div>
+        <div class="auth-modal-form">
+          <div class="form-group">
+            <label class="label">Mobile Number</label>
+            <input class="input" id="signin-mobile" placeholder="+91 XXXXX XXXXX" autocomplete="tel"/>
+          </div>
+          <div class="auth-modal-error" id="mobile-signin-error"></div>
+          <button class="btn btn-primary w-full btn-lg auth-submit-btn" id="btn-signin-mobile" onclick="Auth.doMobileSigninSubmit()">
+            <span class="btn-text">Send OTP</span>
+          </button>
+        </div>
+        <div class="auth-modal-switch">
+          <span class="auth-link" onclick="Auth.openModal('sign-in')">← Back to Options</span>
+        </div>
+      </div>
+
+      <!-- ── FORGOT PASSWORD PANE ── -->
+      <div id="modal-forgot-pane" style="display:none">
+        <div class="auth-modal-title">🔑 Forgot Password</div>
+        <div class="auth-modal-sub">Enter your email or mobile number to receive a reset OTP</div>
+        <div class="auth-modal-form">
+          <div class="form-group">
+            <label class="label">Email or Mobile Number</label>
+            <input class="input" id="forgot-identifier" placeholder="you@example.com or +91 XXXXX XXXXX"/>
+          </div>
+          <div class="auth-modal-error" id="forgot-error"></div>
+          <button class="btn btn-primary w-full btn-lg auth-submit-btn" id="btn-forgot" onclick="Auth.doForgotSubmit()">
+            <span class="btn-text">Send Reset OTP</span>
+          </button>
+        </div>
+        <div class="auth-modal-switch">
+          <span class="auth-link" onclick="Auth.openModal('sign-in')">← Back to Sign In</span>
+        </div>
+      </div>
+
+      <!-- ── RESET PASSWORD PANE ── -->
+      <div id="modal-reset-pane" style="display:none">
+        <div class="auth-modal-title">Reset Password</div>
+        <div class="auth-modal-sub">Create a new secure password for your account</div>
+        <div class="auth-modal-form">
+          <div class="form-group">
+            <label class="label">New Password</label>
+            <div class="auth-pass-wrap">
+              <input class="input" id="reset-pass" type="password" placeholder="Min 8 chars, mixed case, symbols" oninput="Auth.checkPassStrength(this.value)"/>
+              <button class="auth-pass-toggle" onclick="Auth.togglePass('reset-pass',this)" type="button">👁️</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="label">Confirm New Password</label>
+            <div class="auth-pass-wrap">
+              <input class="input" id="reset-confirm-pass" type="password" placeholder="Confirm new password"/>
+              <button class="auth-pass-toggle" onclick="Auth.togglePass('reset-confirm-pass',this)" type="button">👁️</button>
+            </div>
+          </div>
+          <div class="auth-modal-error" id="reset-error"></div>
+          <button class="btn btn-primary w-full btn-lg auth-submit-btn" onclick="Auth.doPasswordResetSubmit()">
+            <span class="btn-text">Save New Password</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── SUCCESS PANE ── -->
+      <div id="modal-success-pane" style="display:none">
+        <div class="auth-success-icon">🎉</div>
+        <div class="auth-modal-title" id="success-pane-title">Account verified!</div>
+        <div class="auth-modal-sub" id="success-pane-sub">Welcome to Mimimelon TV. Redirecting to your dashboard...</div>
+        <div class="auth-success-bar"><div class="auth-success-fill" id="auth-success-fill"></div></div>
+      </div>
+
+    </div><!-- /auth-modal-card -->
+  </div><!-- /auth-modal-overlay -->
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     AUTH PAGE
+═══════════════════════════════════════════════════════ -->
+<div id="view-auth" class="view">
+  <div style="position:absolute;inset:0;background:var(--grad-hero);z-index:0"></div>
+  <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,hsla(262,83%,65%,.12),transparent 70%);top:-100px;left:-100px;z-index:0"></div>
+  <div style="position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,hsla(183,100%,47%,.1),transparent 70%);bottom:-50px;right:-50px;z-index:0"></div>
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🎬</div>
+      <span style="font-family:var(--font-display);font-weight:900;font-size:1.25rem;letter-spacing:-.04em">Mimimelon TV <span class="text-gradient">AI</span></span>
+    </div>
+    <!-- Sign In -->
+    <div id="auth-signin-pane">
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-sub">Sign in to continue creating amazing videos</div>
+      <div class="form-group mb-4"><label class="label">Email</label><input class="input" type="email" placeholder="you@example.com" id="auth-email"/></div>
+      <div class="form-group mb-6"><label class="label">Password</label><input class="input" type="password" placeholder="••••••••" id="auth-pass"/></div>
+      <button class="btn btn-primary w-full btn-lg" onclick="App.doLogin()"><span class="btn-text">Sign In →</span></button>
+      <div class="auth-divider"><span>or continue with</span></div>
+      <div class="flex gap-3">
+        <button class="btn btn-secondary flex-1" onclick="App.doLogin()">🌐 Google</button>
+        <button class="btn btn-secondary flex-1" onclick="App.doLogin()">🍎 Apple</button>
+      </div>
+      <div class="auth-switch">Don't have an account? <span class="auth-link" onclick="App.toggleAuth('sign-up')">Sign up free</span></div>
+    </div>
+    <!-- Sign Up -->
+    <div id="auth-signup-pane" style="display:none">
+      <div class="auth-title">Create account</div>
+      <div class="auth-sub">Start creating cinematic videos for free</div>
+      <div class="form-row mb-4">
+        <div class="form-group"><label class="label">First Name</label><input class="input" placeholder="Alex"/></div>
+        <div class="form-group"><label class="label">Last Name</label><input class="input" placeholder="Smith"/></div>
+      </div>
+      <div class="form-group mb-4"><label class="label">Email</label><input class="input" type="email" placeholder="you@example.com"/></div>
+      <div class="form-group mb-6"><label class="label">Password</label><input class="input" type="password" placeholder="Min 8 characters"/></div>
+      <button class="btn btn-primary w-full btn-lg" onclick="App.doLogin()"><span class="btn-text">Create Account →</span></button>
+      <div class="auth-divider"><span>or</span></div>
+      <button class="btn btn-secondary w-full" onclick="App.doLogin()">🌐 Continue with Google</button>
+      <div class="auth-switch">Already have an account? <span class="auth-link" onclick="App.toggleAuth('sign-in')">Sign in</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     APP SHELL (shows after login)
+═══════════════════════════════════════════════════════ -->
+<div id="app-shell" class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">🎬</div>
+      <div>
+        <div class="sidebar-logo-text">Mimimelon TV <span class="text-gradient">AI</span></div>
+        <span class="sidebar-logo-sub">PRO PLAN</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" id="nav-dashboard" onclick="App.navigate('dashboard')">
+        <span class="nav-icon">🏠</span> Dashboard
+      </a>
+      <a class="nav-item" id="nav-new-project" onclick="App.navigate('new-project')">
+        <span class="nav-icon">✨</span> New Project
+        <span class="nav-badge nav-badge-new">NEW</span>
+      </a>
+
+      <div class="nav-section-label" id="project-nav-section" style="display:none">Current Project</div>
+      <a class="nav-item" id="nav-story" onclick="App.navigate('story')" style="display:none">
+        <span class="nav-icon">📝</span> Story Editor
+      </a>
+      <a class="nav-item" id="nav-bible" onclick="App.navigate('bible')" style="display:none">
+        <span class="nav-icon">📖</span> Story Bible
+      </a>
+      <a class="nav-item" id="nav-characters" onclick="App.navigate('characters')" style="display:none">
+        <span class="nav-icon">👤</span> Characters
+      </a>
+      <a class="nav-item" id="nav-scenes" onclick="App.navigate('scenes')" style="display:none">
+        <span class="nav-icon">🎞️</span> Scenes
+      </a>
+      <a class="nav-item" id="nav-environments" onclick="App.navigate('environments')" style="display:none">
+        <span class="nav-icon">🌍</span> Environments
+      </a>
+      <a class="nav-item" id="nav-images" onclick="App.navigate('images')" style="display:none">
+        <span class="nav-icon">🖼️</span> Image Studio
+      </a>
+      <a class="nav-item" id="nav-videos" onclick="App.navigate('videos')" style="display:none">
+        <span class="nav-icon">🎬</span> Video Studio
+      </a>
+      <a class="nav-item" id="nav-voice" onclick="App.navigate('voice')" style="display:none">
+        <span class="nav-icon">🎙️</span> Voice Studio
+      </a>
+      <a class="nav-item" id="nav-music" onclick="App.navigate('music')" style="display:none">
+        <span class="nav-icon">🎵</span> Music
+      </a>
+      <a class="nav-item" id="nav-timeline" onclick="App.navigate('timeline')" style="display:none">
+        <span class="nav-icon">✂️</span> Timeline Editor
+      </a>
+      <a class="nav-item" id="nav-export" onclick="App.navigate('export')" style="display:none">
+        <span class="nav-icon">📤</span> Export
+      </a>
+
+      <div class="nav-section-label">System</div>
+      <a class="nav-item" id="nav-settings" onclick="App.navigate('settings')">
+        <span class="nav-icon">⚙️</span> AI Settings
+      </a>
+      <a class="nav-item" id="nav-admin" onclick="App.navigate('admin')">
+        <span class="nav-icon">👑</span> Admin Panel
+      </a>
+    </nav>
+    <div class="sidebar-footer" style="position:relative">
+      <div id="user-dropdown" class="user-dropdown" style="display:none; position:absolute; bottom:60px; left:10px; right:10px; background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--r-md); box-shadow:0 -4px 12px rgba(0,0,0,0.3); z-index:100; padding:4px;">
+        <button onclick="Auth.logout()" class="btn btn-ghost w-full" style="text-align:left; justify-content:flex-start; color:var(--danger); height:36px; font-size:0.85rem; padding:0 12px; display:flex; align-items:center; gap:8px; background:transparent; border:none; width:100%; cursor:pointer;">
+          <span>🚪</span> Log Out
+        </button>
+      </div>
+      <div class="user-pill" onclick="Auth.toggleUserDropdown(event)">
+        <div class="user-avatar" id="sidebar-avatar">A</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-name">Alex Creator</div>
+          <div class="user-plan">Pro Plan · 847 credits</div>
+        </div>
+        <span style="color:var(--text-muted);font-size:.75rem">⚙</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- TOPBAR -->
+  <header class="topbar" id="topbar">
+    <button class="btn btn-ghost btn-icon-sm" id="sidebar-toggle" onclick="App.toggleSidebar()" title="Toggle Sidebar">☰</button>
+    <div class="breadcrumb" id="breadcrumb">
+      <span>Mimimelon TV</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current" id="breadcrumb-current">Dashboard</span>
+    </div>
+    <div class="topbar-actions">
+      <div class="autosave-badge" id="autosave-badge" style="display:none">💾 Saved</div>
+      <div class="credit-display">
+        <span class="credit-dot"></span>
+        <span id="credit-count">847</span> credits
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="App.navigate('new-project')">+ New Project</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ── DASHBOARD ── -->
+    <div id="view-dashboard" class="view active anim-fade">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">Dashboard</h1>
+            <p class="view-subtitle">Welcome back! Here's your creative workspace.</p>
+          </div>
+          <button class="btn btn-primary btn-lg" onclick="App.navigate('new-project')">✨ New Project</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon" style="background:var(--primary-subtle)">🎬</div><div class="stat-label">Total Videos</div><div class="stat-value text-gradient">24</div><div class="stat-change up">↑ 4 this week</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--accent-subtle)">⚡</div><div class="stat-label">Credits Used</div><div class="stat-value">1,153</div><div class="stat-change up">↑ 231 today</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--success-subtle)">⏱️</div><div class="stat-label">Total Runtime</div><div class="stat-value">3.2h</div><div class="stat-change up">↑ 18min today</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--warning-subtle)">💯</div><div class="stat-label">Avg Quality</div><div class="stat-value">97%</div><div class="stat-change up">↑ 2% this week</div></div>
+        </div>
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-bold">Recent Projects</h2>
+          <div class="flex gap-2">
+            <button class="btn btn-ghost btn-sm">Grid</button>
+            <button class="btn btn-ghost btn-sm">List</button>
+          </div>
+        </div>
+        <div class="project-grid" id="dashboard-projects">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ── NEW PROJECT ── -->
+    <div id="view-new-project" class="view anim-scale">
+      <div class="view-container" style="max-width:860px">
+        <div class="view-header">
+          <h1 class="view-title">✨ New Project</h1>
+          <p class="view-subtitle">Enter your story idea and let AI do the rest.</p>
+        </div>
+        <div class="prompt-box mb-6">
+          <div class="prompt-label">✦ Your Story Prompt</div>
+          <textarea class="prompt-textarea" id="prompt-input" placeholder="e.g. A poor boy saves a baby bird and discovers he has a magical gift..." maxlength="500"></textarea>
+          <div class="prompt-footer">
+            <span class="prompt-counter"><span id="prompt-char-count">0</span>/500</span>
+          </div>
+        </div>
+        <div class="mb-5">
+          <div class="label mb-3">💡 Try an example</div>
+          <div class="flex flex-wrap gap-2" id="suggestion-chips">
+            <span class="chip" onclick="App.setPrompt(this)">A poor boy saves a baby bird</span>
+            <span class="chip" onclick="App.setPrompt(this)">The journey of a brave monkey</span>
+            <span class="chip" onclick="App.setPrompt(this)">A magical tree in the jungle</span>
+            <span class="chip" onclick="App.setPrompt(this)">A girl who can talk to stars</span>
+            <span class="chip" onclick="App.setPrompt(this)">A robot learning to feel love</span>
+            <span class="chip" onclick="App.setPrompt(this)">Two brothers lost in a haunted forest</span>
+          </div>
+        </div>
+        <div class="card mb-6">
+          <h3 class="font-bold mb-5 text-lg">⚙️ Story Settings</h3>
+          <div class="grid grid-3 gap-5 mb-5">
+            <div class="form-group">
+              <label class="label">Language</label>
+              <select class="select" id="set-language">
+                <option>English</option><option>Hindi</option><option>Assamese</option>
+                <option>Bengali</option><option>Urdu</option><option>Arabic</option>
+                <option>Spanish</option><option>French</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="label">Story Style</label>
+              <select class="select" id="set-style">
+                <option>Cinematic</option><option>Realistic</option><option>Disney</option>
+                <option>Pixar</option><option>Anime</option><option>Cartoon</option>
+                <option>3D Render</option><option>Photorealistic</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="label">Genre</label>
+              <select class="select" id="set-genre">
+                <option>Adventure</option><option>Drama</option><option>Fantasy</option>
+                <option>Horror</option><option>Comedy</option><option>Romance</option>
+                <option>Sci-Fi</option><option>Thriller</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-3 gap-5">
+            <div class="form-group">
+              <label class="label">Story Length</label>
+              <select class="select" id="set-length">
+                <option value="1">1 Minute</option><option value="3">3 Minutes</option>
+                <option value="5" selected>5 Minutes</option><option value="10">10 Minutes</option>
+                <option value="20">20 Minutes</option><option value="custom">Custom</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="label">Voice Type</label>
+              <select class="select" id="set-voice">
+                <option>Female (Warm)</option><option>Male (Deep)</option>
+                <option>Child (Bright)</option><option>Old (Wise)</option>
+                <option>Female (Dramatic)</option><option>Male (Narrator)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="label">Aspect Ratio</label>
+              <select class="select" id="set-ratio">
+                <option value="16:9">16:9 — YouTube/Cinema</option>
+                <option value="9:16">9:16 — TikTok/Reels</option>
+                <option value="1:1">1:1 — Instagram</option>
+                <option value="4:5">4:5 — Facebook</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-generate" id="btn-generate" onclick="App.generateStory()">
+          <span class="btn-text">🚀 Generate Story &amp; Start Project</span>
+        </button>
+        <p style="text-align:center;margin-top:var(--sp-4);font-size:.75rem;color:var(--text-muted)">Estimated: ~60 AI credits · Takes 15–30 seconds</p>
+      </div>
+    </div>
+
+    <!-- ── AI GENERATING VIEW ── -->
+    <div id="view-generating" class="view anim-scale">
+      <div class="view-container" style="max-width:600px">
+        <div class="ai-generating">
+          <div class="ai-orb">✨</div>
+          <div class="ai-gen-title">AI is creating your project...</div>
+          <div class="ai-gen-sub" id="gen-current-step">Analyzing your prompt</div>
+          <div class="ai-steps" id="ai-steps">
+            <div class="ai-step" id="step-0"><div class="ai-step-dot"></div>Analyzing prompt &amp; settings</div>
+            <div class="ai-step" id="step-1"><div class="ai-step-dot"></div>Writing full story &amp; plot</div>
+            <div class="ai-step" id="step-2"><div class="ai-step-dot"></div>Creating Story Bible</div>
+            <div class="ai-step" id="step-3"><div class="ai-step-dot"></div>Generating character profiles</div>
+            <div class="ai-step" id="step-4"><div class="ai-step-dot"></div>Creating character reference images</div>
+            <div class="ai-step" id="step-5"><div class="ai-step-dot"></div>Building environment references</div>
+            <div class="ai-step" id="step-6"><div class="ai-step-dot"></div>Splitting story into scenes</div>
+            <div class="ai-step" id="step-7"><div class="ai-step-dot"></div>Generating image prompts</div>
+            <div class="ai-step" id="step-8"><div class="ai-step-dot"></div>Running quality check</div>
+            <div class="ai-step" id="step-9"><div class="ai-step-dot"></div>Finalizing project</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STORY EDITOR ── -->
+    <div id="view-story" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title" id="story-title-display">Story Editor</h1>
+            <p class="view-subtitle" id="story-genre-display">Cinematic · Adventure · 5 Minutes</p>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn btn-ghost btn-sm" onclick="Views.story.rewrite()">🔄 Rewrite</button>
+            <button class="btn btn-ghost btn-sm" onclick="Views.story.expand()">📈 Expand</button>
+            <button class="btn btn-ghost btn-sm" onclick="Views.story.shorten()">📉 Shorten</button>
+            <button class="btn btn-secondary btn-sm" onclick="Views.story.regenerate()">♻️ Regenerate</button>
+            <button class="btn btn-primary btn-sm" onclick="App.navigate('bible')">Next: Story Bible →</button>
+          </div>
+        </div>
+        <div class="studio-layout">
+          <div>
+            <div class="story-editor-wrap">
+              <div class="story-editor-header">
+                <button class="btn btn-ghost btn-sm" id="story-edit-btn" onclick="Views.story.toggleEdit()">✏️ Edit Story</button>
+                <button class="btn btn-ghost btn-sm" onclick="Views.story.copyAll()">📋 Copy All</button>
+                
+                <!-- Version History Recovery Dropdown -->
+                <div class="flex items-center gap-2 ml-4">
+                  <select id="story-version-select" class="select" style="font-size:0.75rem; padding: 2px 6px; height: 28px; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--r-sm); color:var(--text-secondary); line-height: 1;">
+                    <option value="">-- Version History --</option>
+                  </select>
+                  <button class="btn btn-secondary btn-sm" style="padding: 2px 6px; height: 28px; font-size: 0.75rem;" onclick="Views.story.restoreVersion()">Restore</button>
+                </div>
+
+                <div class="autosave-badge ml-auto" id="story-autosave-status">💾 Saved</div>
+              </div>
+              <div class="story-editor-body" id="story-editor-body">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="card mb-4">
+              <div class="font-bold mb-3">📊 Story Summary</div>
+              <div id="story-summary-panel"><!-- Injected --></div>
+            </div>
+            <div class="card mb-4">
+              <div class="font-bold mb-3">👤 Characters</div>
+              <div id="story-chars-quick"><!-- Injected --></div>
+            </div>
+            <div class="card">
+              <div class="font-bold mb-3">⏱️ Timeline</div>
+              <div id="story-timeline-quick"><!-- Injected --></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STORY BIBLE ── -->
+    <div id="view-bible" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">📖 Story Bible</h1>
+            <p class="view-subtitle">Permanent source of truth — loaded before every generation</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="badge badge-success">🔒 Locked</span>
+            <button class="btn btn-primary btn-sm" onclick="App.navigate('characters')">Next: Characters →</button>
+          </div>
+        </div>
+        <div class="grid grid-2 gap-6" id="bible-panels"><!-- Injected by JS --></div>
+      </div>
+    </div>
+
+    <!-- ── CHARACTER MANAGER ── -->
+    <div id="view-characters" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">👤 Character Manager</h1>
+            <p class="view-subtitle">Lock character attributes to maintain 100% visual consistency</p>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn btn-secondary btn-sm" onclick="Views.chars.addChar()">+ Add Character</button>
+            <button class="btn btn-primary btn-sm" onclick="App.navigate('scenes')">Next: Scenes →</button>
+          </div>
+        </div>
+        <div class="grid grid-4 gap-5" id="char-grid"><!-- Injected by JS --></div>
+      </div>
+    </div>
+
+    <!-- ── SCENE MANAGER ── -->
+    <div id="view-scenes" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">🎞️ Scene Manager</h1>
+            <p class="view-subtitle">Each scene is generated with full Story Bible + character context</p>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn btn-secondary btn-sm" onclick="Views.scenes.addScene()">+ Add Scene</button>
+            <button class="btn btn-primary btn-sm" onclick="App.navigate('environments')">Next: Environments →</button>
+          </div>
+        </div>
+        <div class="grid grid-3 gap-5" id="scene-grid"><!-- Injected by JS --></div>
+      </div>
+    </div>
+
+    <!-- ── ENVIRONMENT MANAGER ── -->
+    <div id="view-environments" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">🌍 Environment Manager</h1>
+            <p class="view-subtitle">Lock environment visuals so backgrounds never randomly change</p>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn btn-secondary btn-sm" onclick="Views.envs.addEnv()">+ Add Environment</button>
+            <button class="btn btn-primary btn-sm" onclick="App.navigate('images')">Next: Image Studio →</button>
+          </div>
+        </div>
+        <div class="grid grid-3 gap-5" id="env-grid"><!-- Injected by JS --></div>
+      </div>
+    </div>
+
+    <!-- ── IMAGE STUDIO ── -->
+    <div id="view-images" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">🖼️ Image Studio</h1>
+            <p class="view-subtitle">AI-generated prompts · Ultra HD · Character &amp; Environment consistent</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="App.navigate('videos')">Next: Video Studio →</button>
+        </div>
+        <div class="studio-layout">
+          <div>
+            <!-- Scene selector -->
+            <div class="tabs mb-4" id="image-scene-tabs"><!-- Injected --></div>
+            <div class="card mb-4">
+              <div class="font-bold text-sm mb-3">🧠 AI Image Prompt</div>
+              <div class="prompt-box" style="border-radius:var(--r-lg)">
+                <textarea class="prompt-textarea" id="img-prompt-text" style="min-height:80px;font-size:.875rem" placeholder="AI-generated image prompt will appear here..."></textarea>
+              </div>
+              <div class="flex gap-2 mt-3">
+                <button class="btn btn-ghost btn-sm" onclick="Views.images.copyPrompt()">📋 Copy</button>
+                <button class="btn btn-ghost btn-sm" onclick="Views.images.regenPrompt()">♻️ Regenerate Prompt</button>
+              </div>
+            </div>
+            <div class="image-preview-wrap" id="img-preview-wrap">
+              <div class="image-placeholder" id="img-placeholder">
+                <div class="image-placeholder-icon">🖼️</div>
+                <div class="text-sm">Generate image to preview</div>
+              </div>
+              <img id="img-preview" style="display:none;width:100%;height:100%;object-fit:cover" alt="Generated scene"/>
+              <div class="image-overlay">
+                <button class="btn btn-primary btn-sm" onclick="Views.images.upscale()">⬆️ Upscale</button>
+                <button class="btn btn-secondary btn-sm" onclick="Views.images.faceFix()">👤 Face Fix</button>
+                <button class="btn btn-secondary btn-sm" onclick="Views.images.enhance()">✨ Enhance</button>
+              </div>
+            </div>
+            <div class="image-actions-bar">
+              <button class="btn btn-primary" onclick="Views.images.generate()" id="btn-gen-image">🎨 Generate Image</button>
+              <button class="btn btn-ghost btn-sm" onclick="Views.images.regenerate()">♻️ Regenerate</button>
+              <button class="btn btn-ghost btn-sm" onclick="Views.images.replace()">🔄 Replace</button>
+              <label class="btn btn-ghost btn-sm" style="cursor:pointer">📤 Upload<input type="file" accept="image/*" style="display:none" onchange="Views.images.upload(this)"/></label>
+            </div>
+          </div>
+          <!-- Right panel -->
+          <div>
+            <div class="studio-panel mb-4">
+              <div class="studio-panel-header">⚙️ Generation Settings</div>
+              <div class="studio-panel-body">
+                <div class="form-group mb-4">
+                  <label class="label">Art Style</label>
+                  <select class="select" id="img-style">
+                    <option>Cinematic Realistic</option><option>Pixar 3D</option>
+                    <option>Disney Animated</option><option>Anime</option>
+                    <option>Dark Fantasy</option><option>Photorealistic</option>
+                    <option>Watercolor</option><option>Comic Book</option>
+                  </select>
+                </div>
+                <div class="form-group mb-4">
+                  <label class="label">Camera Angle</label>
+                  <select class="select" id="img-camera">
+                    <option>Eye Level</option><option>Close Up</option><option>Wide Shot</option>
+                    <option>Bird's Eye</option><option>Low Angle</option><option>Dutch Angle</option>
+                  </select>
+                </div>
+                <div class="form-group mb-4">
+                  <label class="label">Lighting</label>
+                  <select class="select" id="img-lighting">
+                    <option>Golden Hour</option><option>Cinematic</option><option>Soft Natural</option>
+                    <option>Dramatic</option><option>Night</option><option>Studio</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="label">AI Model</label>
+                  <select class="select" id="img-model">
+                    <option>Flux (Default)</option><option>Stable Diffusion XL</option>
+                    <option>Imagen 3</option><option>DALL-E 3</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="studio-panel">
+              <div class="studio-panel-header">✅ Quality Check</div>
+              <div class="studio-panel-body" id="img-quality-panel">
+                <div class="text-sm text-muted text-center" style="padding:var(--sp-6)">Generate an image to run quality check</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIDEO STUDIO ── -->
+    <div id="view-videos" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">🎬 Video Studio</h1>
+            <p class="view-subtitle">Convert images to animated video clips with cinematic motion</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="App.navigate('voice')">Next: Voice Studio →</button>
+        </div>
+        <div class="studio-layout">
+          <div>
+            <div class="tabs mb-4" id="video-scene-tabs"><!-- Injected --></div>
+            <div class="card mb-4">
+              <div class="font-bold text-sm mb-3">🎬 Video Motion Prompt</div>
+              <textarea class="textarea" id="video-prompt-text" style="min-height:80px" placeholder="Character slowly walks forward. Camera performs cinematic dolly-in. Trees gently sway in wind..."></textarea>
+              <div class="flex gap-2 mt-3">
+                <button class="btn btn-ghost btn-sm" onclick="Views.videos.regenPrompt()">♻️ Regenerate Prompt</button>
+                <button class="btn btn-ghost btn-sm" onclick="Views.videos.copyPrompt()">📋 Copy</button>
+              </div>
+            </div>
+            <!-- Video Preview -->
+            <div style="aspect-ratio:16/9;background:var(--bg-elevated);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;position:relative" id="video-preview-wrap">
+              <div class="image-placeholder" id="video-placeholder">
+                <div class="image-placeholder-icon">🎬</div>
+                <div class="text-sm">Generate video clip to preview</div>
+              </div>
+              <div id="video-player" style="display:none;width:100%;height:100%;position:relative">
+                <div style="width:100%;height:100%;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:var(--sp-4)">
+                  <div style="font-size:4rem;animation:pulse 2s infinite">🎬</div>
+                  <div class="text-sm text-muted">Video clip ready</div>
+                  <button class="btn btn-primary btn-sm">▶ Play Preview</button>
+                </div>
+              </div>
+            </div>
+            <div class="image-actions-bar mt-4">
+              <button class="btn btn-primary" onclick="Views.videos.generate()" id="btn-gen-video">🎬 Generate Video Clip</button>
+              <button class="btn btn-ghost btn-sm" onclick="Views.videos.regenerate()">♻️ Regenerate</button>
+              <button class="btn btn-ghost btn-sm" onclick="Views.videos.replace()">🔄 Replace</button>
+            </div>
+          </div>
+          <div>
+            <div class="studio-panel mb-4">
+              <div class="studio-panel-header">🎭 Motion Controls</div>
+              <div class="studio-panel-body">
+                <div class="form-group mb-4">
+                  <label class="label">Character Motion</label>
+                  <select class="select">
+                    <option>Walking Forward</option><option>Running</option><option>Talking</option>
+                    <option>Standing Still</option><option>Sitting Down</option>
+                    <option>Reaching Out</option><option>Looking Around</option>
+                  </select>
+                </div>
+                <div class="form-group mb-4">
+                  <label class="label">Camera Motion</label>
+                  <select class="select">
+                    <option>Dolly In</option><option>Dolly Out</option><option>Pan Left</option>
+                    <option>Pan Right</option><option>Zoom In</option><option>Tilt Up</option>
+                    <option>Tilt Down</option><option>Static</option>
+                  </select>
+                </div>
+                <div class="form-group mb-4">
+                  <label class="label">Background Motion</label>
+                  <select class="select">
+                    <option>Wind in Trees</option><option>Rain</option><option>Fire Flickering</option>
+                    <option>Water Flow</option><option>Clouds Moving</option><option>None</option>
+                  </select>
+                </div>
+                <div class="form-group mb-4">
+                  <label class="label">Duration</label>
+                  <select class="select">
+                    <option>4 seconds</option><option>6 seconds</option><option>8 seconds</option><option>12 seconds</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="label">AI Model</label>
+                  <select class="select">
+                    <option>Veo (Default)</option><option>Kling</option><option>Runway Gen-3</option><option>Pika 1.5</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="studio-panel">
+              <div class="studio-panel-header">🔒 Consistency Lock</div>
+              <div class="studio-panel-body">
+                <div class="text-xs text-muted mb-3">The following changes are BLOCKED in video generation:</div>
+                <div class="flex flex-col gap-2">
+                  <div class="quality-check-item pass">✓ Face identity locked</div>
+                  <div class="quality-check-item pass">✓ Hair &amp; clothing locked</div>
+                  <div class="quality-check-item pass">✓ Environment locked</div>
+                  <div class="quality-check-item pass">✓ Color palette locked</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VOICE STUDIO ── -->
+    <div id="view-voice" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">🎙️ Voice Studio</h1>
+            <p class="view-subtitle">AI-powered narration with emotion control &amp; auto subtitles</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="App.navigate('music')">Next: Music →</button>
+        </div>
+        <div class="studio-layout">
+          <div>
+            <div class="card mb-4">
+              <div class="flex justify-between items-center mb-4">
+                <div class="font-bold">🎙️ Narration Script</div>
+                <div class="flex gap-2">
+                  <button class="btn btn-ghost btn-sm" onclick="Views.voice.generate()" id="btn-gen-voice">▶ Generate Voice</button>
+                  <button class="btn btn-ghost btn-sm">📋 Copy</button>
+                </div>
+              </div>
+              <textarea class="textarea textarea-xl" id="voice-script" placeholder="Your narration script will appear here..."></textarea>
+            </div>
+            <!-- Waveform -->
+            <div class="card mb-4">
+              <div class="flex justify-between items-center mb-3">
+                <div class="font-bold">🎵 Audio Preview</div>
+                <div class="flex gap-2">
+                  <button class="btn btn-ghost btn-icon-sm" id="voice-play-btn" onclick="Views.voice.togglePlay()">▶</button>
+                  <button class="btn btn-ghost btn-sm">📥 Download</button>
+                </div>
+              </div>
+              <div class="waveform" id="voice-waveform"><!-- Generated by JS --></div>
+              <div class="flex justify-between text-xs text-muted mt-2">
+                <span id="voice-current-time">0:00</span>
+                <span id="voice-duration">0:00</span>
+              </div>
+            </div>
+            <!-- Subtitles -->
+            <div class="card">
+              <div class="flex justify-between items-center mb-4">
+                <div class="font-bold">📝 Subtitle Editor</div>
+                <div class="flex gap-2">
+                  <select class="select" style="width:auto" id="subtitle-style">
+                    <option>YouTube</option><option>TikTok</option><option>Cinematic</option><option>Facebook</option>
+                  </select>
+                  <button class="btn btn-ghost btn-sm" onclick="Views.voice.addSubtitle()">+ Add</button>
+                </div>
+              </div>
+              <div id="subtitle-list"><!-- Injected --></div>
+            </div>
+          </div>
+          <div>
+            <div class="studio-panel mb-4">
+              <div class="studio-panel-header">🎚️ Voice Controls</div>
+              <div class="studio-panel-body voice-controls">
+                <div class="form-group mb-4">
+                  <label class="label">Voice Type</label>
+                  <select class="select" id="voice-type">
+                    <option>Female — Warm</option><option>Male — Deep</option>
+                    <option>Child — Bright</option><option>Old — Wise</option>
+                    <option>Female — Dramatic</option><option>Male — Narrator</option>
+                  </select>
+                </div>
+                <div class="form-group mb-4">
+                  <label class="label">Language</label>
+                  <select class="select" id="voice-lang">
+                    <option>English</option><option>Hindi</option><option>Assamese</option>
+                    <option>Bengali</option><option>Urdu</option><option>Arabic</option>
+                    <option>Spanish</option><option>French</option>
+                  </select>
+                </div>
+                <div class="form-group mb-4">
+                  <label class="label">Emotion</label>
+                  <select class="select" id="voice-emotion">
+                    <option>Dramatic</option><option>Emotional</option><option>Happy</option>
+                    <option>Sad</option><option>Inspirational</option><option>Funny</option>
+                  </select>
+                </div>
+                <div class="voice-param-row mb-4">
+                  <span class="voice-param-label">Pitch</span>
+                  <input type="range" class="slider flex-1" min="-10" max="10" value="0" id="voice-pitch" oninput="document.getElementById('voice-pitch-val').textContent=this.value"/>
+                  <span class="voice-param-val" id="voice-pitch-val">0</span>
+                </div>
+                <div class="voice-param-row mb-4">
+                  <span class="voice-param-label">Speed</span>
+                  <input type="range" class="slider flex-1" min="50" max="200" value="100" id="voice-speed" oninput="document.getElementById('voice-speed-val').textContent=this.value+'%'"/>
+                  <span class="voice-param-val" id="voice-speed-val">100%</span>
+                </div>
+                <div class="voice-param-row">
+                  <span class="voice-param-label">Volume</span>
+                  <input type="range" class="slider flex-1" min="0" max="100" value="80" id="voice-volume" oninput="document.getElementById('voice-vol-val').textContent=this.value+'%'"/>
+                  <span class="voice-param-val" id="voice-vol-val">80%</span>
+                </div>
+              </div>
+            </div>
+            <div class="studio-panel">
+              <div class="studio-panel-header">🤖 AI Voice Model</div>
+              <div class="studio-panel-body">
+                <div class="flex flex-col gap-2">
+                  <div class="model-card selected"><div class="model-icon" style="background:var(--primary-subtle)">🎙️</div><div class="model-info"><div class="model-name">ElevenLabs</div><div class="model-desc">Most realistic voices</div></div><div class="model-check"></div></div>
+                  <div class="model-card" onclick="Views.voice.selectModel(this)"><div class="model-icon" style="background:var(--accent-subtle)">🔊</div><div class="model-info"><div class="model-name">OpenAI TTS</div><div class="model-desc">Fast &amp; natural</div></div><div class="model-check"></div></div>
+                  <div class="model-card" onclick="Views.voice.selectModel(this)"><div class="model-icon" style="background:var(--success-subtle)">🌐</div><div class="model-info"><div class="model-name">Azure Speech</div><div class="model-desc">100+ languages</div></div><div class="model-check"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MUSIC STUDIO ── -->
+    <div id="view-music" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">🎵 Music Studio</h1>
+            <p class="view-subtitle">AI-suggested background music matched to your story's mood</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="App.navigate('timeline')">Next: Timeline Editor →</button>
+        </div>
+        <div class="studio-layout">
+          <div>
+            <div class="tabs-pill mb-4" id="music-genre-tabs">
+              <span class="tab active" onclick="Views.music.filterGenre(this,'all')">All</span>
+              <span class="tab" onclick="Views.music.filterGenre(this,'emotional')">Emotional</span>
+              <span class="tab" onclick="Views.music.filterGenre(this,'adventure')">Adventure</span>
+              <span class="tab" onclick="Views.music.filterGenre(this,'cinematic')">Cinematic</span>
+              <span class="tab" onclick="Views.music.filterGenre(this,'horror')">Horror</span>
+              <span class="tab" onclick="Views.music.filterGenre(this,'funny')">Funny</span>
+            </div>
+            <div id="music-track-list"><!-- Injected --></div>
+          </div>
+          <div>
+            <div class="studio-panel mb-4">
+              <div class="studio-panel-header">🎚️ Music Controls</div>
+              <div class="studio-panel-body voice-controls">
+                <div class="voice-param-row mb-4">
+                  <span class="voice-param-label">Volume</span>
+                  <input type="range" class="slider flex-1" min="0" max="100" value="40" oninput="document.getElementById('music-vol-val').textContent=this.value+'%'"/>
+                  <span class="voice-param-val" id="music-vol-val">40%</span>
+                </div>
+                <div class="voice-param-row mb-4">
+                  <span class="voice-param-label">Fade In</span>
+                  <input type="range" class="slider flex-1" min="0" max="10" value="2" oninput="document.getElementById('music-fi-val').textContent=this.value+'s'"/>
+                  <span class="voice-param-val" id="music-fi-val">2s</span>
+                </div>
+                <div class="voice-param-row">
+                  <span class="voice-param-label">Fade Out</span>
+                  <input type="range" class="slider flex-1" min="0" max="10" value="3" oninput="document.getElementById('music-fo-val').textContent=this.value+'s'"/>
+                  <span class="voice-param-val" id="music-fo-val">3s</span>
+                </div>
+                <div class="divider"></div>
+                <label class="toggle mt-2"><input type="checkbox" checked/><span class="toggle-track"><span class="toggle-thumb"></span></span><span class="toggle-label">Loop music</span></label>
+              </div>
+            </div>
+            <div class="card">
+              <div class="font-bold mb-3">🎯 AI Recommendation</div>
+              <div class="text-sm text-muted mb-3">Based on your story's emotional arc:</div>
+              <div id="music-recommendation"><!-- Injected --></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TIMELINE EDITOR ── -->
+    <div id="view-timeline" class="view anim-slide">
+      <div class="view-container" style="padding-bottom:0">
+        <div class="view-header flex justify-between items-center">
+          <div>
+            <h1 class="view-title">✂️ Timeline Editor</h1>
+            <p class="view-subtitle">Professional multi-track editor — drag, cut, trim, add effects</p>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn btn-secondary btn-sm" onclick="Views.timeline.autoArrange()">⚡ Auto Arrange</button>
+            <button class="btn btn-primary btn-sm" onclick="App.navigate('export')">Next: Export →</button>
+          </div>
+        </div>
+        <!-- Timeline -->
+        <div class="timeline-editor" id="timeline-editor">
+          <div class="timeline-toolbar">
+            <button class="btn btn-ghost btn-icon-sm" onclick="Views.timeline.undo()" title="Undo">↩</button>
+            <button class="btn btn-ghost btn-icon-sm" onclick="Views.timeline.redo()" title="Redo">↪</button>
+            <div class="timeline-sep"></div>
+            <button class="btn btn-ghost btn-icon-sm" onclick="Views.timeline.togglePlay()" id="tl-play-btn" title="Play/Pause">▶</button>
+            <button class="btn btn-ghost btn-icon-sm" onclick="Views.timeline.stop()" title="Stop">⏹</button>
+            <div class="timeline-time" id="tl-time">0:00.0</div>
+            <div class="timeline-sep"></div>
+            <button class="btn btn-ghost btn-sm btn-sm" onclick="Views.timeline.split()">✂ Split</button>
+            <button class="btn btn-ghost btn-sm btn-sm" onclick="Views.timeline.deleteClip()">🗑 Delete</button>
+            <button class="btn btn-ghost btn-sm btn-sm" onclick="Views.timeline.addEffect()">✨ Effect</button>
+            <div class="timeline-sep"></div>
+            <div class="timeline-zoom">
+              <button class="btn btn-ghost btn-icon-sm" onclick="Views.timeline.zoomOut()">−</button>
+              <span class="text-xs text-muted" id="tl-zoom-label">100%</span>
+              <button class="btn btn-ghost btn-icon-sm" onclick="Views.timeline.zoomIn()">+</button>
+            </div>
+            <div class="timeline-sep"></div>
+            <span class="text-xs text-muted">Total: <strong id="tl-total-dur">2:15</strong></span>
+          </div>
+          <div class="timeline-body">
+            <div class="tl-labels">
+              <div class="tl-label-head"></div>
+              <div class="tl-label-row">🎬 <span>Video</span></div>
+              <div class="tl-label-row">🎙️ <span>Voice</span></div>
+              <div class="tl-label-row">📝 <span>Subtitles</span></div>
+              <div class="tl-label-row">🎵 <span>Music</span></div>
+            </div>
+            <div class="tl-tracks" id="tl-tracks-wrap">
+              <div class="tl-ruler" id="tl-ruler"><!-- Injected --></div>
+              <!-- Track rows -->
+              <div class="tl-track-row" id="tl-video-track">
+                <div class="tl-playhead" id="tl-playhead" style="left:0"></div>
+              </div>
+              <div class="tl-track-row" id="tl-audio-track"></div>
+              <div class="tl-track-row" id="tl-sub-track"></div>
+              <div class="tl-track-row" id="tl-music-track"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Effects panel -->
+        <div class="card mt-4" id="tl-effects-panel" style="display:none">
+          <div class="font-bold mb-4">✨ Clip Effects</div>
+          <div class="flex flex-wrap gap-3">
+            <button class="chip active">Fade In</button><button class="chip">Fade Out</button>
+            <button class="chip">Blur</button><button class="chip">Zoom</button>
+            <button class="chip">Flash</button><button class="chip">Cinematic Bars</button>
+            <button class="chip">Motion Blur</button><button class="chip">Vignette</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EXPORT ── -->
+    <div id="view-export" class="view anim-scale">
+      <div class="view-container" style="max-width:860px">
+        <div class="view-header">
+          <h1 class="view-title">📤 Export Video</h1>
+          <p class="view-subtitle">Choose your format, quality and aspect ratio</p>
+        </div>
+        <div id="export-options-view">
+          <div class="card mb-6">
+            <div class="font-bold mb-4">📁 Format</div>
+            <div class="export-option-grid" style="grid-template-columns:repeat(3,1fr)" id="format-options">
+              <div class="export-option selected" onclick="Views.export.select(this,'format')"><div class="export-option-icon">🎬</div><div class="export-option-label">MP4</div></div>
+              <div class="export-option" onclick="Views.export.select(this,'format')"><div class="export-option-icon">🍎</div><div class="export-option-label">MOV</div></div>
+              <div class="export-option" onclick="Views.export.select(this,'format')"><div class="export-option-icon">📀</div><div class="export-option-label">AVI</div></div>
+            </div>
+          </div>
+          <div class="card mb-6">
+            <div class="font-bold mb-4">📺 Quality</div>
+            <div class="export-option-grid" id="quality-options">
+              <div class="export-option" onclick="Views.export.select(this,'quality')"><div class="export-option-icon">📺</div><div class="export-option-label">720P</div></div>
+              <div class="export-option selected" onclick="Views.export.select(this,'quality')"><div class="export-option-icon">🖥️</div><div class="export-option-label">1080P</div></div>
+              <div class="export-option" onclick="Views.export.select(this,'quality')"><div class="export-option-icon">✨</div><div class="export-option-label">2K</div></div>
+              <div class="export-option" onclick="Views.export.select(this,'quality')"><div class="export-option-icon">🔮</div><div class="export-option-label">4K</div></div>
+            </div>
+          </div>
+          <div class="card mb-6">
+            <div class="font-bold mb-4">📐 Aspect Ratio</div>
+            <div class="export-option-grid" id="ratio-options">
+              <div class="export-option selected" onclick="Views.export.select(this,'ratio')"><div class="export-option-icon">📺</div><div class="export-option-label">16:9</div></div>
+              <div class="export-option" onclick="Views.export.select(this,'ratio')"><div class="export-option-icon">📱</div><div class="export-option-label">9:16</div></div>
+              <div class="export-option" onclick="Views.export.select(this,'ratio')"><div class="export-option-icon">⬛</div><div class="export-option-label">1:1</div></div>
+              <div class="export-option" onclick="Views.export.select(this,'ratio')"><div class="export-option-icon">📷</div><div class="export-option-label">4:5</div></div>
+            </div>
+          </div>
+          <div class="card mb-6">
+            <div class="font-bold mb-3">⚙️ Additional Options</div>
+            <div class="flex flex-col gap-3 mt-4">
+              <label class="toggle"><input type="checkbox" checked/><span class="toggle-track"><span class="toggle-thumb"></span></span><span class="toggle-label">Include subtitles (burned in)</span></label>
+              <label class="toggle"><input type="checkbox" checked/><span class="toggle-track"><span class="toggle-thumb"></span></span><span class="toggle-label">Include background music</span></label>
+              <label class="toggle"><input type="checkbox"/><span class="toggle-track"><span class="toggle-thumb"></span></span><span class="toggle-label">Add watermark</span></label>
+              <label class="toggle"><input type="checkbox"/><span class="toggle-track"><span class="toggle-thumb"></span></span><span class="toggle-label">Export subtitle file (.srt)</span></label>
+            </div>
+          </div>
+          <button class="btn btn-generate" onclick="Views.export.startExport()">
+            <span class="btn-text">🚀 Start Export</span>
+          </button>
+        </div>
+        <!-- Export progress -->
+        <div id="export-progress-view" style="display:none">
+          <div class="export-progress-wrap">
+            <div class="export-icon-big">🎬</div>
+            <div class="text-2xl font-bold mb-2">Rendering your movie...</div>
+            <div class="text-muted mb-8" id="export-status-text">Initializing render pipeline...</div>
+            <div class="progress progress-xl mb-3"><div class="progress-bar" id="export-progress-bar" style="width:0%"></div></div>
+            <div class="flex justify-between text-xs text-muted">
+              <span id="export-percent">0%</span>
+              <span id="export-eta">Calculating ETA...</span>
+            </div>
+            <div class="ai-steps mt-8 mx-auto" style="width:auto;max-width:400px" id="export-steps"><!-- Injected --></div>
+          </div>
+        </div>
+        <div id="export-done-view" style="display:none">
+          <div class="export-progress-wrap">
+            <div class="export-icon-big">🎉</div>
+            <div class="text-2xl font-bold mb-2">Export Complete!</div>
+            <div class="text-muted mb-8">Your cinematic video is ready to download</div>
+            <div class="flex gap-4 justify-center">
+              <button class="btn btn-primary btn-lg">📥 Download MP4</button>
+              <button class="btn btn-secondary btn-lg" onclick="App.navigate('dashboard')">🏠 Dashboard</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS ── -->
+    <div id="view-settings" class="view anim-slide">
+      <div class="view-container" style="max-width:900px">
+        <div class="view-header">
+          <h1 class="view-title">⚙️ AI Model Settings</h1>
+          <p class="view-subtitle">Choose which AI models power each part of your pipeline</p>
+        </div>
+        <div class="tabs mb-6">
+          <span class="tab active" onclick="App.switchTab(this,'settings-tabs','settings-llm')">🧠 Language (LLM)</span>
+          <span class="tab" onclick="App.switchTab(this,'settings-tabs','settings-image')">🖼️ Image Generation</span>
+          <span class="tab" onclick="App.switchTab(this,'settings-tabs','settings-video')">🎬 Video Generation</span>
+          <span class="tab" onclick="App.switchTab(this,'settings-tabs','settings-voice')">🎙️ Voice / TTS</span>
+          <span class="tab" onclick="App.switchTab(this,'settings-tabs','settings-api')">🔑 API Keys</span>
+        </div>
+        <div id="settings-llm" class="tab-pane active">
+          <div class="flex flex-col gap-3">
+            <div class="model-card selected"><div class="model-icon" style="background:var(--primary-subtle)">🤖</div><div class="model-info"><div class="model-name">GPT-4o (OpenAI)</div><div class="model-desc">Best quality story generation and dialogue</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'llm')"><div class="model-icon" style="background:var(--accent-subtle)">✨</div><div class="model-info"><div class="model-name">Gemini 2.0 Pro</div><div class="model-desc">Google's most capable model, great for long stories</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'llm')"><div class="model-icon" style="background:var(--warning-subtle)">🟤</div><div class="model-info"><div class="model-name">Claude Sonnet 4</div><div class="model-desc">Excellent creative writing and narrative consistency</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'llm')"><div class="model-icon" style="background:var(--success-subtle)">🐋</div><div class="model-info"><div class="model-name">DeepSeek V3</div><div class="model-desc">Fast and cost-efficient for high-volume generation</div></div><div class="model-check"></div></div>
+          </div>
+        </div>
+        <div id="settings-image" class="tab-pane">
+          <div class="flex flex-col gap-3">
+            <div class="model-card selected"><div class="model-icon" style="background:var(--primary-subtle)">⚡</div><div class="model-info"><div class="model-name">Flux 1.1 Pro</div><div class="model-desc">Best quality, fastest generation, photorealistic</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'image')"><div class="model-icon" style="background:var(--accent-subtle)">🎨</div><div class="model-info"><div class="model-name">Stable Diffusion XL</div><div class="model-desc">Open source, highly customizable styles</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'image')"><div class="model-icon" style="background:var(--success-subtle)">🌟</div><div class="model-info"><div class="model-name">Imagen 3 (Google)</div><div class="model-desc">Ultra-realistic, excellent for cinematic imagery</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'image')"><div class="model-icon" style="background:var(--warning-subtle)">🎭</div><div class="model-info"><div class="model-name">DALL-E 3 (OpenAI)</div><div class="model-desc">Great prompt adherence and creative consistency</div></div><div class="model-check"></div></div>
+          </div>
+        </div>
+        <div id="settings-video" class="tab-pane">
+          <div class="flex flex-col gap-3">
+            <div class="model-card selected"><div class="model-icon" style="background:var(--primary-subtle)">🎬</div><div class="model-info"><div class="model-name">Veo 3 (Google)</div><div class="model-desc">State-of-the-art video generation, native audio</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'video')"><div class="model-icon" style="background:var(--accent-subtle)">🦅</div><div class="model-info"><div class="model-name">Kling 1.6 Pro</div><div class="model-desc">Excellent motion consistency, 10s clips</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'video')"><div class="model-icon" style="background:var(--warning-subtle)">🛫</div><div class="model-info"><div class="model-name">Runway Gen-3 Alpha</div><div class="model-desc">Best camera motion controls</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'video')"><div class="model-icon" style="background:var(--success-subtle)">🐦</div><div class="model-info"><div class="model-name">Pika 2.1</div><div class="model-desc">Fast generation, good for short clips</div></div><div class="model-check"></div></div>
+          </div>
+        </div>
+        <div id="settings-voice" class="tab-pane">
+          <div class="flex flex-col gap-3">
+            <div class="model-card selected"><div class="model-icon" style="background:var(--primary-subtle)">🎙️</div><div class="model-info"><div class="model-name">ElevenLabs Multilingual v2</div><div class="model-desc">Most realistic, 29 languages, emotion control</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'voice')"><div class="model-icon" style="background:var(--accent-subtle)">🔊</div><div class="model-info"><div class="model-name">OpenAI TTS HD</div><div class="model-desc">6 voices, very natural, fast generation</div></div><div class="model-check"></div></div>
+            <div class="model-card" onclick="Views.settings.selectModel(this,'voice')"><div class="model-icon" style="background:var(--success-subtle)">🌐</div><div class="model-info"><div class="model-name">Azure Cognitive Speech</div><div class="model-desc">100+ languages, 400+ voices, enterprise grade</div></div><div class="model-check"></div></div>
+          </div>
+        </div>
+        <div id="settings-api" class="tab-pane">
+          <div class="flex flex-col gap-4">
+            <div class="form-group"><label class="label">OpenAI API Key</label><input class="input" type="password" id="settings-api-openai" placeholder="sk-..." /></div>
+            <div class="form-group"><label class="label">Google Gemini API Key</label><input class="input" type="password" id="settings-api-gemini" placeholder="AIza..." /></div>
+            <div class="form-group"><label class="label">Anthropic (Claude) API Key</label><input class="input" type="password" id="settings-api-anthropic" placeholder="sk-ant-..." /></div>
+            <div class="form-group"><label class="label">ElevenLabs API Key</label><input class="input" type="password" id="settings-api-elevenlabs" placeholder="..." /></div>
+            <div class="form-group"><label class="label">Flux / BFL API Key</label><input class="input" type="password" id="settings-api-flux" placeholder="..." /></div>
+            <div class="form-group"><label class="label">RunwayML API Key</label><input class="input" type="password" id="settings-api-runway" placeholder="..." /></div>
+            <button class="btn btn-primary mt-2" onclick="Views.settings.saveKeys()">💾 Save API Keys</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ADMIN PANEL ── -->
+    <div id="view-admin" class="view anim-slide">
+      <div class="view-container">
+        <div class="view-header">
+          <h1 class="view-title">👑 Admin Panel</h1>
+          <p class="view-subtitle">Platform management, analytics &amp; user control</p>
+        </div>
+        <div class="tabs mb-6">
+          <span class="tab active" onclick="App.switchTab(this,'admin-tabs','admin-overview')">📊 Overview</span>
+          <span class="tab" onclick="App.switchTab(this,'admin-tabs','admin-users')">👥 Users</span>
+          <span class="tab" onclick="App.switchTab(this,'admin-tabs','admin-revenue')">💰 Revenue</span>
+          <span class="tab" onclick="App.switchTab(this,'admin-tabs','admin-api')">🔌 API Usage</span>
+          <span class="tab" onclick="App.switchTab(this,'admin-tabs','admin-credits')">⚡ Credits</span>
+        </div>
+        <div id="admin-overview" class="tab-pane active">
+          <div class="admin-stats">
+            <div class="stat-card"><div class="stat-icon" style="background:var(--primary-subtle)">👥</div><div class="stat-label">Total Users</div><div class="stat-value text-gradient">12,847</div><div class="stat-change up">↑ 342 this week</div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:var(--success-subtle)">💰</div><div class="stat-label">Monthly Revenue</div><div class="stat-value">$48.2K</div><div class="stat-change up">↑ 18% MoM</div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:var(--accent-subtle)">🎬</div><div class="stat-label">Videos Generated</div><div class="stat-value">50,214</div><div class="stat-change up">↑ 2,341 today</div></div>
+            <div class="stat-card"><div class="stat-icon" style="background:var(--warning-subtle)">⚡</div><div class="stat-label">Credits Used</div><div class="stat-value">2.1M</div><div class="stat-change up">↑ 142K today</div></div>
+          </div>
+          <div class="card">
+            <div class="flex justify-between items-center mb-4">
+              <div class="font-bold">Videos Generated — Last 30 Days</div>
+              <span class="badge badge-success">↑ +23% vs last month</span>
+            </div>
+            <div class="chart-bars" id="admin-chart"><!-- Injected --></div>
+          </div>
+        </div>
+        <div id="admin-users" class="tab-pane">
+          <div class="card">
+            <div class="flex justify-between items-center mb-4">
+              <div class="font-bold">All Users</div>
+              <div class="flex gap-3">
+                <input class="input" style="width:200px" placeholder="Search users..."/>
+                <select class="select" style="width:130px"><option>All Plans</option><option>Free</option><option>Pro</option><option>Enterprise</option></select>
+              </div>
+            </div>
+            <table class="data-table" id="admin-users-table">
+              <thead><tr><th>User</th><th>Plan</th><th>Videos</th><th>Credits</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+              <tbody id="admin-users-body"><!-- Injected --></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="admin-revenue" class="tab-pane">
+          <div class="grid grid-3 gap-4 mb-6">
+            <div class="stat-card"><div class="stat-label">MRR</div><div class="stat-value">$48,240</div><div class="stat-change up">↑ 18%</div></div>
+            <div class="stat-card"><div class="stat-label">ARR</div><div class="stat-value">$578K</div><div class="stat-change up">↑ 22%</div></div>
+            <div class="stat-card"><div class="stat-label">Churn Rate</div><div class="stat-value">2.1%</div><div class="stat-change up">↓ 0.3%</div></div>
+          </div>
+          <div class="card">
+            <div class="font-bold mb-4">Revenue Breakdown by Plan</div>
+            <div class="flex flex-col gap-3">
+              <div><div class="flex justify-between text-sm mb-2"><span>Enterprise ($99/mo)</span><span class="text-accent font-bold">$28,710 (59%)</span></div><div class="progress progress-lg"><div class="progress-bar" style="width:59%"></div></div></div>
+              <div><div class="flex justify-between text-sm mb-2"><span>Pro ($29/mo)</span><span class="text-accent font-bold">$16,820 (35%)</span></div><div class="progress progress-lg"><div class="progress-bar" style="width:35%;background:var(--accent)"></div></div></div>
+              <div><div class="flex justify-between text-sm mb-2"><span>Free (Upgrades)</span><span class="text-accent font-bold">$2,710 (6%)</span></div><div class="progress progress-lg"><div class="progress-bar" style="width:6%;background:var(--success)"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div id="admin-api" class="tab-pane">
+          <div class="card">
+            <div class="font-bold mb-4">API Usage This Month</div>
+            <table class="data-table">
+              <thead><tr><th>API Service</th><th>Calls</th><th>Cost</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>OpenAI GPT-4o</td><td>142,500</td><td>$2,138</td><td><span class="badge badge-success">Active</span></td></tr>
+                <tr><td>ElevenLabs TTS</td><td>89,200</td><td>$1,338</td><td><span class="badge badge-success">Active</span></td></tr>
+                <tr><td>Flux Image Gen</td><td>210,400</td><td>$4,208</td><td><span class="badge badge-success">Active</span></td></tr>
+                <tr><td>Veo Video Gen</td><td>12,800</td><td>$6,400</td><td><span class="badge badge-success">Active</span></td></tr>
+                <tr><td>Google Gemini</td><td>34,100</td><td>$341</td><td><span class="badge badge-warning">Near Limit</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="admin-credits" class="tab-pane">
+          <div class="grid grid-3 gap-4 mb-6">
+            <div class="stat-card"><div class="stat-label">Credits Sold</div><div class="stat-value">2.4M</div></div>
+            <div class="stat-card"><div class="stat-label">Credits Used</div><div class="stat-value">2.1M</div></div>
+            <div class="stat-card"><div class="stat-label">Credits Balance</div><div class="stat-value text-success">328K</div></div>
+          </div>
+          <div class="card">
+            <div class="font-bold mb-4">Credit Pricing</div>
+            <table class="data-table">
+              <thead><tr><th>Action</th><th>Credits Cost</th></tr></thead>
+              <tbody>
+                <tr><td>Generate Story (1 min)</td><td>10 credits</td></tr>
+                <tr><td>Generate Image (1 scene)</td><td>5 credits</td></tr>
+                <tr><td>Generate Video Clip (6s)</td><td>20 credits</td></tr>
+                <tr><td>Generate Voice (1 min)</td><td>8 credits</td></tr>
+                <tr><td>Export 1080P</td><td>15 credits</td></tr>
+                <tr><td>Export 4K</td><td>40 credits</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="char-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div class="modal-title" id="char-modal-title">Character Details</div>
+      <div class="modal-close" onclick="App.closeModal('char-modal')">✕</div>
+    </div>
+    <div id="char-modal-body"><!-- Injected --></div>
+  </div>
+</div>
+<div class="modal-overlay" id="scene-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div class="modal-title" id="scene-modal-title">Scene Details</div>
+      <div class="modal-close" onclick="App.closeModal('scene-modal')">✕</div>
+    </div>
+    <div id="scene-modal-body"><!-- Injected --></div>
+  </div>
+</div>
+<div class="modal-overlay" id="effect-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add Effect</div><div class="modal-close" onclick="App.closeModal('effect-modal')">✕</div></div>
+    <div class="flex flex-wrap gap-3 mt-2">
+      <button class="chip">Fade In/Out</button><button class="chip">Blur Transition</button>
+      <button class="chip">Zoom Effect</button><button class="chip">Flash</button>
+      <button class="chip">Cinematic Bars</button><button class="chip">Motion Blur</button>
+      <button class="chip">Color Grade</button><button class="chip">Vignette</button>
+    </div>
+    <div class="flex gap-3 mt-6"><button class="btn btn-primary flex-1">Apply Effect</button><button class="btn btn-ghost flex-1" onclick="App.closeModal('effect-modal')">Cancel</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="story-ai-modal">
+  <div class="modal modal-lg" style="max-width: 800px;">
+    <div class="modal-header">
+      <div class="modal-title" id="ai-modal-title">AI Story Assistant</div>
+      <div class="modal-close" onclick="App.closeModal('story-ai-modal')">✕</div>
+    </div>
+    
+    <!-- Screen 1: Config Screen -->
+    <div id="ai-screen-config">
+      <!-- Options will be dynamically populated/displayed based on operation -->
+      
+      <!-- Rewrite Option Panels -->
+      <div id="panel-rewrite" style="display:none">
+        <div class="label mb-3">Choose Rewrite Style:</div>
+        <div class="grid grid-4 gap-3 mb-6">
+          <label class="chip-select"><input type="radio" name="ai-style-rewrite" value="Improve Writing" checked/><span>✨ Improve Writing</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-rewrite" value="More Emotional"/><span>❤️ More Emotional</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-rewrite" value="More Cinematic"/><span>🎬 More Cinematic</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-rewrite" value="More Detailed"/><span>📝 More Detailed</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-rewrite" value="More Professional"/><span>💼 More Professional</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-rewrite" value="More Child Friendly"/><span>👶 More Child Friendly</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-rewrite" value="More Dramatic"/><span>🎭 More Dramatic</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-rewrite" value="More Funny"/><span>😂 More Funny</span></label>
+        </div>
+      </div>
+
+      <!-- Expand Option Panels -->
+      <div id="panel-expand" style="display:none">
+        <div class="label mb-3">Expand To:</div>
+        <div class="grid grid-5 gap-3 mb-5">
+          <label class="chip-select"><input type="radio" name="ai-length-expand" value="+25%" checked/><span>📈 +25%</span></label>
+          <label class="chip-select"><input type="radio" name="ai-length-expand" value="+50%"/><span>📈 +50%</span></label>
+          <label class="chip-select"><input type="radio" name="ai-length-expand" value="+100%"/><span>📈 +100%</span></label>
+          <label class="chip-select"><input type="radio" name="ai-length-expand" value="Double"/><span>🔥 Double</span></label>
+          <label class="chip-select"><input type="radio" name="ai-length-expand" value="Triple"/><span>⚡ Triple</span></label>
+        </div>
+        <div class="label mb-3">Story Style:</div>
+        <div class="grid grid-6 gap-3 mb-6">
+          <label class="chip-select"><input type="radio" name="ai-style-expand" value="Cinematic" checked/><span>🎬 Cinematic</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-expand" value="Emotional"/><span>❤️ Emotional</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-expand" value="Detailed"/><span>📝 Detailed</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-expand" value="Adventure"/><span>🛡️ Adventure</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-expand" value="Fantasy"/><span>🦄 Fantasy</span></label>
+          <label class="chip-select"><input type="radio" name="ai-style-expand" value="Professional"/><span>💼 Professional</span></label>
+        </div>
+      </div>
+
+      <!-- Shorten Option Panels -->
+      <div id="panel-shorten" style="display:none">
+        <div class="label mb-3">Reduce Length By:</div>
+        <div class="grid grid-3 gap-3 mb-6">
+          <label class="chip-select"><input type="radio" name="ai-length-shorten" value="Reduce 25%" checked/><span>📉 Reduce 25%</span></label>
+          <label class="chip-select"><input type="radio" name="ai-length-shorten" value="Reduce 50%"/><span>📉 Reduce 50%</span></label>
+          <label class="chip-select"><input type="radio" name="ai-length-shorten" value="Reduce 75%"/><span>📉 Reduce 75%</span></label>
+        </div>
+      </div>
+
+      <!-- Regenerate Option Panels -->
+      <div id="panel-regenerate" style="display:none">
+        <div class="label mb-3">A fresh version of the story will be generated keeping the original plot boundaries and character names intact.</div>
+        <div class="card mb-6" style="background:var(--bg-surface); padding: var(--sp-4);">
+          <div class="text-sm mb-2">Original Settings:</div>
+          <div class="text-xs text-muted">Original Prompt: <strong id="ai-regen-prompt">Golden Oak Sparrow</strong></div>
+          <div class="text-xs text-muted">Genre: <strong id="ai-regen-genre">Adventure</strong></div>
+          <div class="text-xs text-muted">Theme: <strong id="ai-regen-theme">Empathy & courage</strong></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary w-full" id="ai-btn-generate" onclick="Views.story.executeAIOperation()">Generate Output →</button>
+    </div>
+
+    <!-- Screen 2: Loading State -->
+    <div id="ai-screen-loading" style="display: none; text-align: center; padding: var(--sp-8) 0;">
+      <div class="auth-modal-title mb-2" id="ai-loading-title">Analyzing Story...</div>
+      <div class="text-sm text-muted mb-6" id="ai-loading-desc">Generating contextual updates...</div>
+      <div class="auth-success-bar" style="max-width: 300px; margin: 0 auto;">
+        <div class="auth-success-fill" id="ai-progress-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Screen 3: Error Pane -->
+    <div id="ai-screen-error" style="display: none; text-align: center; padding: var(--sp-8) 0;">
+      <div class="text-danger mb-4" style="font-size: 3rem;">⚠️</div>
+      <div class="auth-modal-title mb-2" id="ai-error-title">Unable to process request.</div>
+      <div class="text-sm text-muted mb-6">AI generation timed out or failed to parse. Please try again.</div>
+      <button class="btn btn-primary" onclick="Views.story.executeAIOperation()">Try Again</button>
+    </div>
+
+    <!-- Screen 4: Comparison Preview -->
+    <div id="ai-screen-preview" style="display: none;">
+      <div class="grid grid-2 gap-4 mb-6">
+        <div>
+          <div class="label mb-2">Original Version</div>
+          <div class="story-preview-box" id="ai-original-text" style="height: 300px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border); padding: var(--sp-4); border-radius: var(--r-md); font-size: 0.875rem; line-height: 1.6; color: var(--text-secondary);"></div>
+        </div>
+        <div>
+          <div class="label mb-2">Generated Version (<span id="ai-selected-label-spec">Improve Writing</span>)</div>
+          <div class="story-preview-box" id="ai-new-text" style="height: 300px; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border); padding: var(--sp-4); border-radius: var(--r-md); font-size: 0.875rem; line-height: 1.6; color: var(--text-primary);"></div>
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-primary flex-1" onclick="Views.story.acceptChanges()">Accept Changes</button>
+        <button class="btn btn-secondary flex-1" onclick="Views.story.executeAIOperation()">Generate Again</button>
+        <button class="btn btn-ghost flex-1" onclick="Views.story.rejectChanges()">Reject Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="js/modules/ai-connector.js"></script>
+<script src="js/app.js"></script>
+<script src="js/modules/story-bible.js"></script>
+<script src="js/modules/character-manager.js"></script>
+<script src="js/modules/scene-generator.js"></script>
+<script src="js/modules/timeline-editor.js"></script>
+<script src="js/modules/voice-engine.js"></script>
+<script src="js/modules/music-engine.js"></script>
+<script src="js/modules/export-engine.js"></script>
+<script src="js/modules/admin.js"></script>
+</body>
+</html>
+
